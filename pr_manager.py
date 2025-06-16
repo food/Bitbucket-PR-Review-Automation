@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 # get_prs.py - Bitbucket PR Fetcher
 #
 # This file is part of pr_review.
