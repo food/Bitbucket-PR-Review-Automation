@@ -67,8 +67,14 @@ def fetch_pr_diff(diff_url, token):
 def sanitize_filename(text):
     return re.sub(r'[^a-zA-Z0-9_\-]', '_', text)[:60]
 
+def remove_think_tags(text):
+    # Entfernt alles zwischen <think> und </think>, inklusive der Tags selbst
+    return re.sub(r"<think>.*?</think>", "", text, flags=re.DOTALL)
 
 def save_markdown(pr_url, response_text, diff_text):
+    # remove think tag text
+    response_text = remove_think_tags(response_text)
+
     timestamp = datetime.now().strftime("%Y-%m-%d_%H-%M")
     pr_id_match = re.search(r"/pull-requests/(\d+)", pr_url)
     pr_id = pr_id_match.group(1) if pr_id_match else "unknown"

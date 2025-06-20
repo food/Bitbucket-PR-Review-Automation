@@ -20,6 +20,7 @@
 
 from get_prs import get_prs
 import subprocess
+import sys
 
 # === Chose prs to review ===
 def select_prs(prs) -> list:
@@ -30,7 +31,12 @@ def select_prs(prs) -> list:
         link = pr['links']['self'][0]['href']
         print(f"{i}. {title}  👤 {author}\n   🔗 {link}\n")
 
-    selection = input("🔢 Which PRs do you like to review? (1,2,3): ").strip()
+    selection = input("🔢 Which PRs do you like to review? (1,2,3 or x to quit): ").strip()
+
+    if selection.lower() == 'x':
+        print("👋")
+        sys.exit(0)
+
     indices = [int(x) - 1 for x in selection.split(",") if x.strip().isdigit()]
     return [prs[i] for i in indices if 0 <= i < len(prs)]
 
