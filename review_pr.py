@@ -28,7 +28,7 @@ from ollama_cummunication import generate_ollama_response
 
 # === Load .env file ===
 load_dotenv()
-OLLAMA_MODEL = os.getenv("OLLAMA_MODEL")
+OLLAMA_MODEL = os.getenv("OLLAMA_MODEL", "codellama")
 OLLAMA_PROMT = os.getenv("OLLAMA_PROMT_REVIEW")
 BITBUCKET_BASE_URL = os.getenv("BITBUCKET_BASE_URL")
 TOKEN = os.getenv("BITBUCKET_TOKEN")
@@ -119,7 +119,7 @@ def main():
 
     print("🤖 Send to Ollama...")
 
-    response = generate_ollama_response(prompt, OLLAMA_MODEL)
+    response = generate_ollama_response(prompt)
     print("\n📘 Explain and Review:\n")
     print(response)
 

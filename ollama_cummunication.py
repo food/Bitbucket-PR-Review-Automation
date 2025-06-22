@@ -19,25 +19,25 @@
 
 import os
 from dotenv import load_dotenv
-import requests
 import sys
+from ollama import Client  # Assuming this is how you initialize the client
 
 # === Load .env file ===
 load_dotenv()
 OLLAMA_HOST = os.getenv("OLLAMA_HOST")
+OLLAMA_MODEL = os.getenv("OLLAMA_MODEL", "codellama")
 
-def generate_ollama_response(prompt: str, model: str | None = "codellama"):
+client = Client(OLLAMA_HOST)
+
+
+def generate_ollama_response(prompt: str):
     """
     Send prompt to Ollama and return its response.
     """
-    payload = {
-        "model": model,
-        "prompt": prompt,
-        "stream": False
-    }
-    res = requests.post(f"{OLLAMA_HOST}/api/generate", json=payload)
-    if res.status_code != 200:
-        print("❌ Error in request to Ollama.")
-        print(res.text)
+    try:
+        response = client.chat(model=OLLAMA_MODEL, messages=[{"role": "user", "content": prompt}])
+        return response["message"]["content"]
+    except Exception as e:
+        print(f"❌ Ollama error: {e}")
         sys.exit(1)
-    return res.json()["response"].strip()
+
