@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 # get_prs.py - Bitbucket PR Fetcher
 #
 # This file is part of pr_review.
@@ -29,7 +30,7 @@ from ollama_cummunication import generate_ollama_response
 load_dotenv()
 BITBUCKET_BASE_URL = os.getenv("BITBUCKET_BASE_URL")
 BITBUCKET_TOKEN = os.getenv("BITBUCKET_TOKEN")
-OLLAMA_MODEL = os.getenv("OLLAMA_MODEL")
+OLLAMA_MODEL = os.getenv("OLLAMA_MODEL", "codellama")
 OLLAMA_MODEL_GIT = os.getenv("OLLAMA_MODEL_GIT")
 
 # === ENV CHECKS ===
@@ -71,7 +72,7 @@ def run_code_check(repo_path):
     {diff_text}
     """
 
-    response = generate_ollama_response(prompt, OLLAMA_MODEL)
+    response = generate_ollama_response(prompt)
     print("\n👀 Review:\n")
     print(response)
 
@@ -133,7 +134,7 @@ Please generate a meaningful Git commit message using the Conventional Commits f
 - First line: short title (e.g. feat: Add login handler)
 - Following lines: optional body (why/what changed).
 """
-    response = generate_ollama_response(prompt, OLLAMA_MODEL_GIT)
+    response = generate_ollama_response(prompt)
     lines = response.strip().splitlines()
     if lines[0] != "```":
         title = lines[0]

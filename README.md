@@ -100,6 +100,7 @@ See `.env.example` for details.
 
 - improve docs and comments
 - using lib dir and add file to remove redundancies
+- supporting other ai provider
 
 ## License
 
