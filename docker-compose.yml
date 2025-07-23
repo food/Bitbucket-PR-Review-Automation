@@ -1,0 +1,23 @@
+services:
+  ollama:
+    image: ollama/ollama:latest
+    container_name: ollama-nvidia-docker
+    hostname: ollama
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              capabilities: ["gpu"]
+              count: all
+    restart: unless-stopped
+    ports:
+      - 11434:11434
+    volumes:
+      - ~/.ollama:/root/.ollama
+    environment:
+      - CUDA_VISIBLE_DEVICES=-1
+      - ENABLED_OLLAMA=1
+      - OLLAMA_ORIGINS="*"
+      - OLLAMA_PROXY_URL="http://192.168.111.5:11434"
+      - OLLAMA_HOST="0.0.0.0:11434"
